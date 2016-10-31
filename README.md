@@ -13,3 +13,10 @@ Run with a command like:
 docker run --name webserver -p 80:80 -v `pwd`/site/localhost.conf:/etc/nginx/conf.d/localhost.conf -v `pwd`/site/html:/app/html -d jethro/alpine-glassfish
 ```
 
+Then advisable to change the Glassfish admin password:
+
+```
+docker exec -it webserver /bin/sh
+cd /glassfish4/bin
+asadmin --user admin change-admin-password
+```

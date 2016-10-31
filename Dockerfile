@@ -182,9 +182,6 @@ WORKDIR /app
 
 EXPOSE 80 443 4848
 
-## Start asadmin console and the domain
-#CMD ["asadmin", "start-domain", "-v"]
-#
-#ENTRYPOINT ["nginx", "-g", "daemon off;"]
+## Start glassfish and nginx
 ENTRYPOINT ["/usr/bin/startup.sh"]
 
