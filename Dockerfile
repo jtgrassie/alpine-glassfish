@@ -16,6 +16,8 @@ ENV LIBPNG_VERSION=1.2.56 \
     PATH=$PATH:$JAVA_HOME/bin \
     MYSQL_CONNECTOR_URL=https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.40.tar.gz \
     MYSQL_CONNECTOR_PKG=mysql-connector-java-5.1.40.tar.gz \
+    MARIADB_CONNECTOR_URL=http://central.maven.org/maven2/org/mariadb/jdbc/mariadb-java-client/1.5.4/mariadb-java-client-1.5.4.jar \
+    MARIADB_CONNECTOR_PKG=mariadb-java-client-1.5.4.jar \
     GLASSFISH_PKG=glassfish-4.1.1.zip \
     GLASSFISH_URL=http://download.oracle.com/glassfish/4.1.1/release/glassfish-4.1.1.zip \
     GLASSFISH_HOME=/glassfish4 \
@@ -52,6 +54,7 @@ RUN apk add --update wget unzip tar && \
     unzip -o $GLASSFISH_PKG && \
     rm -f $GLASSFISH_PKG && \
     wget --no-check-certificate $MYSQL_CONNECTOR_URL && \
+    wget --no-check-certificate $MARIADB_CONNECTOR_URL && \
     apk del wget unzip && \
     echo "--- Setup the password file ---" && \
     echo "AS_ADMIN_PASSWORD=" > /tmp/glassfishpwd && \
@@ -66,7 +69,9 @@ RUN apk add --update wget unzip tar && \
     asadmin --user=admin stop-domain && \
     rm /tmp/glassfishpwd && \
     tar --strip-components 1 -C $GLASSFISH_HOME/glassfish/domains/domain1/lib -xzf $MYSQL_CONNECTOR_PKG mysql-connector-java-5.1.40/mysql-connector-java-5.1.40-bin.jar && \
-    rm $MYSQL_CONNECTOR_PKG
+    cp $MARIADB_CONNECTOR_PKG $GLASSFISH_HOME/glassfish/domains/domain1/lib/ && \
+    rm $MYSQL_CONNECTOR_PKG && \
+    rm $MARIADB_CONNECTOR_PKG
 
 
 RUN mkdir /app \
