@@ -1,5 +1,5 @@
 #!/bin/sh
 
-nginx -g "daemon off"
+nginx &
 asadmin start-domain -v
 
